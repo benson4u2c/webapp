@@ -61,7 +61,17 @@ pipeline
                   sh 'scp -o StrictHostKeyChecking=no target/*.war root@192.168.0.153:/home/PROD/apache-tomcat-8.5.77/webapps/webapp.war'
                 }      
              }       
-      }
+        }
+       stage ('DAST') {
+          steps {
+            sshagent(['zap']) {
+              sh 'ssh -o  StrictHostKeyChecking=no root@192.168.0.153 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://192.168.0.153:8080/webapp/" || true'
+            }
+          }
+        }
+      
+      
+      
     }
     
     
