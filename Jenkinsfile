@@ -22,6 +22,11 @@ pipeline
           sh 'mvn clean package'
           }
         }
+         stage('Manual Approval'){
+            steps{
+                input 'Deploying to Stage server'
+            }
+         }
 
        stage ('Deploy-To-Tomcat') {
               steps {
